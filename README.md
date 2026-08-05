@@ -1,5 +1,5 @@
 # Notebooks for TRUCHAT
 
-- [TOREVIEW_chat_to_db_manager](TOREVIEW_chat_to_db_manager.md)
-- [TOREVIEW_chat_to_document_manager](TOREVIEW_chat_to_document_manager.md)
-- [TOREVIEW_chat_to_email_manager](TOREVIEW_chat_to_email_manager.md)
+- [AI Document Manager](document-manager.md) Manage Documents with AI
+- [AI Email Manager](email-manager.md) Manager Email with AI
+- [AI Database Manager](database-manager.md) Manage Databases with AI
