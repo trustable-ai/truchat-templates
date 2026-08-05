@@ -1,352 +1,347 @@
-# 1 - Transform the AI Chat into a Visual PostgreSQL Workspace
+# Database Manager
 
-Transform the existing AI-powered chat application into a premium PostgreSQL management workspace where the AI is only the engine behind the interface—not the interface itself.
+# 1 - Transform the AI Chat into a Visual PostgreSQL Workspace (Foundation)
+
+Transform the existing AI-powered chat into a premium PostgreSQL workspace where AI is the engine behind the interface—not the interface itself.
 
 Use:
 
-- React
-- TypeScript
-- Tailwind CSS
-- shadcn/ui
-- Framer Motion
-- Lucide React
+* React
+* TypeScript
+* Tailwind CSS
+* shadcn/ui
+* Framer Motion
+* Lucide React
 
-The application must be fully responsive using a mobile-first approach.
+Requirements:
 
-Do **not** build a traditional chatbot.
+* Fully responsive (mobile-first)
+* Modern SaaS design
+* No classic chatbot UI
+* No chat bubbles
+* Only one persistent AI prompt bar fixed at the bottom
+* Everything above the prompt must be graphical
 
-The only persistent chat element should be a beautiful AI prompt bar fixed to the bottom of the screen where users can ask questions or execute natural language database commands.
+Build the application shell including:
 
-Everything above the input must be a fully graphical interface.
-
-Never display long conversations or multiple chat bubbles.
-
-Instead, every AI response must dynamically generate rich visual components.
-
-For example:
-
-- "Show tables" generates animated table cards.
-- "Explain schema" opens an interactive schema explorer.
-- "Find duplicates" displays sortable duplicate reports.
-- "Optimize query" renders optimization cards with before/after metrics.
-- "Show indexes" opens an index dashboard.
-- "Slow queries" creates a performance monitoring screen.
-
-The AI should generate visual workspaces instead of text conversations.
-
-Use cards, widgets, tables, dashboards and diagrams as the primary communication method.
-
-Keep textual explanations extremely short.
-
-Every generated workspace should feel like it belongs inside a premium PostgreSQL IDE.
+* Responsive App Layout
+* Left Sidebar
+* Top Navigation
+* Main Workspace
+* Right Inspector Panel (desktop)
+* Mobile Drawer
+* Bottom AI Prompt Bar
 
 Design inspiration:
 
-- Supabase Studio
-- Vercel
-- Linear
-- Notion
-- Arc Browser
-- Raycast
-- ChatGPT
-- Prisma Studio
+* Supabase Studio
+* Prisma Studio
+* Vercel
+* Linear
+* Arc Browser
+* Raycast
+* Notion
 
-The design language must include:
+Use:
 
-- rounded corners
-- glassmorphism
-- soft gradients
-- elegant shadows
-- premium spacing
-- smooth animations
-- subtle hover effects
-- beautiful empty states
-- skeleton loading
-- polished transitions
-- floating panels
-- adaptive layouts
+* glassmorphism
+* rounded corners
+* elegant shadows
+* subtle gradients
+* premium spacing
+* Framer Motion transitions
+* reusable components
 
-Everything must be built using reusable React components and Tailwind CSS utilities.
+The interface should include placeholder cards and beautiful empty states.
 
-Avoid fixed widths.
+### Test checklist
 
-The application should naturally adapt to phones, tablets, laptops and ultrawide monitors.
+* Responsive on desktop/tablet/mobile
+* Sidebar collapses correctly
+* Mobile drawer works
+* Bottom AI prompt stays fixed
+* No traditional chat interface remains
 
 ---
 
-# 2 - Build a Fully Graphical PostgreSQL Experience
+# 2 - AI Workspace Renderer
 
-Treat every AI response as instructions for generating an interactive interface instead of text.
+Replace conversational responses with graphical workspaces.
 
-Do not create pages filled with paragraphs.
+The AI must never create long conversations.
 
-The AI should populate the screen with reusable visual components such as:
+Instead, each command dynamically renders reusable React components.
 
-- Statistic Cards
-- Dashboard Widgets
-- Responsive Data Tables
-- SQL Cards
-- Schema Explorer
-- Database Explorer
-- ER Diagrams
-- Execution Plans
-- Query History
-- Activity Timeline
-- Health Indicators
-- Performance Widgets
-- Storage Cards
-- Index Cards
-- Constraint Cards
-- Relationship Graphs
-- Search Panels
-- Floating Inspectors
-- Context Side Panels
-- Bottom Sheets
-- Mobile Drawers
+Implement a renderer capable of switching workspace depending on AI intent.
 
-Use animations everywhere through Framer Motion.
+Support example intents:
+
+* Show Tables
+* Database Overview
+* Schema Explorer
+* Show Indexes
+* Slow Queries
+* Query History
+* Storage
+* Performance
+* Activity
+* Empty State
+
+Each workspace should animate with Framer Motion.
 
 Include:
 
-- fade transitions
-- slide animations
-- layout transitions
-- card hover animations
-- expanding panels
-- animated loading placeholders
-- smooth navigation
+* Statistic Cards
+* Dashboard Widgets
+* Animated Cards
+* Responsive Grids
+* Skeleton Loading
+* Empty States
 
-Desktop should use collapsible sidebars and contextual inspectors.
+Keep textual explanations minimal.
 
-Mobile should replace them with drawers and bottom sheets.
+### Test checklist
 
-Every interaction should feel polished and premium.
-
-Never expose raw JSON or plain SQL unless inside dedicated SQL cards.
-
-SQL should always appear inside beautiful code blocks with:
-
-- syntax highlighting
-- copy button
-- edit button
-- explain button
-- execute button
-- save button
-
-Query results should appear inside responsive tables supporting:
-
-- sorting
-- filtering
-- pagination
-- column resizing
-- CSV export
-- JSON export
-- row selection
-
-The application should resemble a commercial SaaS product rather than a developer prototype.
+Typing example commands should switch between graphical workspaces without creating chat messages.
 
 ---
 
-# 3 - Create a PostgreSQL Studio Instead of a Chat Application
+# 3 - PostgreSQL Sandbox & Connection Manager
 
-Completely replace the classic chat experience with a visual PostgreSQL Studio powered by AI.
+Create a built-in PostgreSQL Sandbox.
 
-The chat input remains only as the command interface.
+The sandbox should simulate a realistic production database of approximately 200 MB containing multiple schemas and thousands of records.
 
-Everything else becomes graphical.
+Example entities:
 
-Instead of replying with text, the AI should decide which visual workspace to render.
+* Users
+* Roles
+* Permissions
+* Orders
+* Products
+* Categories
+* Inventory
+* Payments
+* Invoices
+* Shipments
+* Sessions
+* Audit Logs
+* Notifications
+* Analytics
 
-Example transformations:
+Sandbox actions:
 
-"Show tables"
-
-→ Responsive grid of animated table cards.
-
-"Explain schema"
-
-→ Interactive relationship explorer with expandable tables.
-
-"Describe users table"
-
-→ Column cards, constraints, indexes, relationships and sample rows.
-
-"Find duplicates"
-
-→ Duplicate analysis dashboard with highlighted rows.
-
-"Optimize query"
-
-→ Performance report with execution plan, recommendations and optimization score.
-
-"Show indexes"
-
-→ Interactive index dashboard with usage statistics.
-
-"Database overview"
-
-→ Executive dashboard displaying:
-
-- active connections
-- storage usage
-- table count
-- schema count
-- replication status
-- slow queries
-- locks
-- cache hit ratio
-- transaction rate
-- database health
-
-Keep text minimal.
-
-Prefer:
-
-- icons
-- chips
-- badges
-- charts
-- cards
-- visual indicators
-- progress bars
-- dashboards
-- timelines
-- diagrams
-- responsive grids
-
-The only large text component allowed is the AI prompt bar at the bottom.
-
-Everything else should communicate visually.
-
-The final application should immediately feel like a premium database management platform comparable to Supabase Studio or Prisma Studio, while using AI as the intelligence behind every screen rather than displaying conversations.
-
-# 4 - Database Sandbox, Connections and AI Insights
-
-The application should be immediately usable without requiring the user to connect an external PostgreSQL database.
-
-Create a built-in **PostgreSQL Sandbox** containing a realistic sample database of approximately **200 MB**.
-
-The sandbox should simulate a production environment with multiple schemas and thousands of records, including examples such as:
-
-- Users
-- Roles
-- Permissions
-- Orders
-- Products
-- Categories
-- Inventory
-- Payments
-- Invoices
-- Shipments
-- Audit Logs
-- Notifications
-- Analytics
-- Sessions
-
-The sandbox database must be completely disposable.
-
-Users can:
-
-- Reset Sandbox
-- Delete Sandbox
-- Recreate Sandbox
-- Duplicate Sandbox
-- Restore Demo Data
+* Reset
+* Delete
+* Recreate
+* Duplicate
+* Restore Demo Data
 
 Deleting the sandbox must never affect external databases.
 
-## Database Connections
+Create a graphical Connection Manager.
 
-Allow users to connect unlimited PostgreSQL databases.
+Each database appears as a card displaying:
 
-Provide a beautiful connection manager with cards for every database.
+* Name
+* Host
+* PostgreSQL Version
+* Size
+* Schemas
+* Tables
+* Active Connections
+* Last Sync
+* Status
+* Environment Badge
+* Favorite
+* Tags
 
-Each connection card should display:
+Support:
 
-- database name
-- host
-- PostgreSQL version
-- database size
-- number of schemas
-- number of tables
-- active connections
-- last synchronization
-- connection status
-- favorite indicator
-- tags
-- environment badge (Development, Staging, Production)
+* Add Database
+* Edit
+* Duplicate
+* Delete
+* Test Connection
+* SSL
+* Connection String
 
-Users should be able to:
+### Test checklist
 
-- Add Database
-- Edit Connection
-- Test Connection
-- Duplicate Connection
-- Disconnect
-- Delete Connection
-- Mark as Favorite
+* Sandbox loads by default
+* Sandbox actions update UI
+* New fake connections can be added
+* Connection cards are fully responsive
 
-Support SSL connections and connection strings.
+---
 
-The connection experience should be elegant and completely graphical.
+# 4 - Database Explorer
 
-## AI Insights Dashboard
+Build a graphical PostgreSQL Explorer.
 
-Every connected database should automatically generate AI-powered insight cards.
+Include:
 
-Do not display these insights as chat messages.
+* Schema Tree
+* Table Explorer
+* Column Inspector
+* Constraints
+* Relationships
+* Indexes
+* Views
+* Functions
 
-Instead, render clickable dashboard cards.
+Desktop:
 
-Examples include:
+* collapsible sidebar
+* floating inspector
 
-- Large unused indexes
-- Missing indexes
-- Slow queries detected
-- Duplicate records
-- Missing foreign keys
-- Tables without primary keys
-- Storage optimization opportunities
-- Vacuum recommendations
-- High table fragmentation
-- Long-running transactions
-- Replication warnings
-- Deadlocks detected
-- Security recommendations
-- Permission inconsistencies
-- Backup reminders
-- Database growth trends
+Mobile:
 
-Each insight card should contain:
+* bottom sheets
+* drawers
 
-- icon
-- severity badge
-- short title
-- concise description
-- confidence score
-- affected objects
-- estimated performance impact
-- estimated storage impact
-- generated timestamp
+Opening a table should display:
 
-Clicking an insight should open a beautiful slide-over panel containing:
+* Columns
+* Constraints
+* Indexes
+* Relationships
+* Sample Rows
 
-- detailed explanation
-- affected tables
-- affected indexes
-- generated SQL fix
-- execution preview
-- estimated improvement
-- before/after comparison
-- related documentation
-- one-click execute
-- save recommendation
-- dismiss insight
+No raw SQL except inside dedicated SQL Cards.
 
-Insights should update dynamically after every executed query.
+### Test checklist
 
-The application should feel like an intelligent database assistant continuously monitoring and improving every connected PostgreSQL instance.
+Opening tables updates the explorer and inspector without page reloads.
 
-The interface must always prioritize graphical dashboards, interactive cards and visual analytics over conversational text.
+---
 
+# 5 - SQL Workspace
 
+Create a premium SQL experience.
+
+SQL must only appear inside SQL Cards.
+
+Each SQL Card includes:
+
+* Syntax Highlighting
+* Copy
+* Edit
+* Explain
+* Execute
+* Save
+
+Query results appear inside responsive tables supporting:
+
+* Sorting
+* Filtering
+* Pagination
+* Column Resize
+* Row Selection
+* CSV Export
+* JSON Export
+
+Use animated transitions.
+
+### Test checklist
+
+Executing demo SQL updates the result table and shows loading animations.
+
+---
+
+# 6 - AI Insights Dashboard
+
+Generate AI-powered insight cards instead of chat messages.
+
+Examples:
+
+* Missing Index
+* Unused Index
+* Duplicate Records
+* Slow Query
+* Missing Foreign Key
+* Missing Primary Key
+* Storage Optimization
+* Vacuum Recommendation
+* Deadlock
+* Security Issue
+* Backup Reminder
+* Replication Warning
+* Growth Trend
+
+Each card contains:
+
+* Icon
+* Severity
+* Title
+* Description
+* Confidence
+* Affected Objects
+* Storage Impact
+* Performance Impact
+* Timestamp
+
+Clicking a card opens a slide-over panel displaying:
+
+* Explanation
+* Affected Objects
+* Generated SQL
+* Execution Preview
+* Estimated Improvement
+* Before / After
+* Related Docs
+* Execute
+* Save
+* Dismiss
+
+Insights refresh automatically after every executed query.
+
+### Test checklist
+
+Opening an insight displays the slide-over and action buttons; dismissing or executing updates the dashboard.
+
+---
+
+# 7 - Final Polish
+
+Polish the application until it feels like a commercial PostgreSQL IDE.
+
+Improve:
+
+* animations
+* spacing
+* typography
+* hover effects
+* loading states
+* transitions
+* responsiveness
+* accessibility
+* dark mode
+* reusable components
+* performance
+
+Remove all placeholder UI that is no longer needed.
+
+The final result should resemble a blend of:
+
+* Supabase Studio
+* Prisma Studio
+* Vercel Dashboard
+* Linear
+* Arc Browser
+
+The AI should always render graphical workspaces instead of conversations.
+
+### Final acceptance checklist
+
+* No traditional chat interface
+* AI prompt bar is the only persistent text input
+* All responses are graphical
+* Responsive across all screen sizes
+* Sandbox operational
+* Connection Manager operational
+* Database Explorer operational
+* SQL Workspace operational
+* AI Insights operational
+* Smooth Framer Motion animations throughout
+* Premium SaaS-quality visual design
