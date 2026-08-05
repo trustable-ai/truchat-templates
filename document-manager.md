@@ -1,206 +1,355 @@
-# 1 - Document Management Chat
+# Document Manager
+
+# 1 - Document Management Workspace Foundation
 
 IMPORTANT: Keep the application fully responsive and use Tailwind CSS.
 
-Transform this chat into an AI assistant specialized in document management.
+Transform the existing chat application into a modern AI-powered Document Management Workspace.
 
-The goal is to create a chat-based workspace that allows users to:
+Use:
 
-- upload, analyze, and organize documents;
-- read content from PDF, DOCX, TXT, and Markdown files;
-- extract important information;
-- create summaries, structures, checklists, and operational notes;
-- compare different versions of the same document;
-- assist with writing and editing content while maintaining context.
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Framer Motion
+- Lucide React
 
-Design the interaction as a document notebook:
+Do not create a traditional chatbot.
 
-- each document must have its own isolated context;
-- store metadata such as title, date, version, category, and status;
-- always show which documents are available in the current session;
-- allow users to request specific actions on documents using natural language.
-
-Create an initial structure with:
-
-- Document Library
-- Recent Documents
-- Active Document
-- Document Actions
-
-The chat should behave as an intelligent document workspace, not as a simple conversation.
-
----
-
-# 2 - Document Analysis Workspace
-
-Evolve the previous chat into an advanced document analysis environment.
-
-Add features for:
-
-- automatically analyzing document content;
-- recognizing document type, topic, and structure;
-- extracting titles, sections, people, dates, numbers, and key information;
-- generating a document map;
-- creating short, medium, and detailed summaries;
-- highlighting issues, missing information, and inconsistent sections.
-
-Each document should be displayed with:
-
-- general information;
-- section index;
-- main content;
-- AI-generated notes;
-- suggested questions for deeper analysis.
-
-Implement a contextual conversation system where the user can write:
-
-"analyze this document"
-
-"find differences with the previous version"
-
-"create a report"
-
-"extract the tasks to complete"
-
-and the chat should automatically understand which document should be used.
-
----
-
-# 3 - Intelligent Document Assistant
-
-Transform the system into a complete AI assistant for the entire document lifecycle.
-
-Add:
-
-- creation of new documents through chat;
-- collaborative content editing;
-- version management;
-- revision comparison;
-- document approval workflow and status tracking;
-- automatic categorization;
-- semantic search across documents;
-- connections between related documents.
-
-Create an experience similar to an AI notebook where each document can become an independent project.
-
-The chat must support workflows such as:
-
-1. Import document
-2. Analyze content
-3. Extract information
-4. Generate improvements
-5. Create a new version
-6. Archive or publish
-
-Design the interface and logic as a professional system for companies, teams, and personal knowledge management.
-
----
-
-# 4 - Document Management Interface Design
-
-Transform the document chat into a complete graphical application for document management with a modern AI Workspace interface.
-
-Create a complete UI composed of:
+Create the application structure:
 
 ## Main Layout
 
-Build a three-column structure:
+Desktop:
+
+- Left sidebar
+- Main workspace
+- Right AI assistant panel
+
+Mobile:
+
+- Responsive drawer navigation
+- Bottom sheets
+- Collapsible panels
+
+Create:
+
+## Left Sidebar
+
+Document Library containing:
+
+- Search bar
+- Recent Documents
+- Categories
+- Tags
+- Upload button
+- New Document button
+
+## Main Workspace
+
+Create an empty document area with:
+
+- Empty state
+- Selected document placeholder
+- Document information header
+
+## Right Panel
+
+Create AI Assistant panel with:
+
+- Context indicator
+- Quick action buttons
+- Prompt input
+
+Use:
+
+- rounded cards
+- glassmorphism
+- animations
+- skeleton loading
+- responsive design
+
+### Test checklist
+
+Verify:
+
+- Layout works on desktop and mobile
+- Sidebar opens/closes
+- Panels resize correctly
+- Empty states are displayed
+- No classic chat bubbles exist
 
 ---
 
-## Left Sidebar - Document Library
+# 2 - Document Library and File Management
 
-Create a document library with:
+Implement the document management system.
 
-- list of all available documents;
-- intelligent search;
-- filters by:
-  - document type;
-  - category;
-  - modification date;
-  - status;
-  - tags;
-- folders and custom collections;
-- "New Document" button;
-- "Upload Document" button.
+Create a document model containing:
 
-Each document must be displayed as a card containing:
+- id
+- title
+- type
+- size
+- author
+- creation date
+- modification date
+- version
+- category
+- tags
+- status
 
-- file format icon (PDF, DOCX, TXT, MD);
-- title;
-- last modification date;
-- author;
-- tags;
-- status (Draft, Review, Published);
-- action menu:
-  - Open;
-  - Rename;
-  - Duplicate;
-  - Compare version;
-  - Archive.
+Support document types:
+
+- PDF
+- DOCX
+- TXT
+- Markdown
+
+Build the Document Library interface.
+
+Each document must appear as a card with:
+
+- file icon
+- title
+- metadata
+- tags
+- status badge
+- actions menu
+
+Actions:
+
+- Open
+- Rename
+- Duplicate
+- Archive
+- Delete
+
+Add:
+
+- Search
+- Filtering
+- Sorting
+- Categories
+- Collections
+
+Use mock documents initially.
+
+### Test checklist
+
+Verify:
+
+- Documents appear in the library
+- Search filters documents
+- Categories work
+- Opening a document updates the workspace
+- Actions modify document state
 
 ---
 
-## Center Area - Document Workspace
+# 3 - Document Viewer and AI Notebook Workspace
 
-Create a main area where the selected document is displayed.
+Create the document workspace.
 
-The screen must contain:
+When a document is selected display:
 
-Document Header:
+## Document Header
 
-- editable title;
-- current version;
-- status;
-- share button;
-- export button;
-- create new version button.
+Include:
 
-Content area:
+- Editable title
+- Version
+- Status
+- Author
+- Export button
+- Create new version button
 
-- document viewer;
-- Markdown/WYSIWYG editor;
-- expandable sections;
-- change highlighting;
-- comments and annotations.
+## Content Area
 
-Add an "AI Notebook" mode:
+Create a document viewer/editor supporting:
 
-- content blocks;
-- AI analysis blocks;
-- generated notes;
-- suggested questions;
-- processing results.
+- Markdown rendering
+- Editable text blocks
+- Sections
+- Headings
+- Notes
+- Comments
+- Highlighted changes
+
+Add AI Notebook mode.
+
+The workspace should contain blocks:
+
+- Document Content Block
+- AI Summary Block
+- Notes Block
+- Extracted Information Block
+- Suggested Questions Block
+
+The AI should modify blocks instead of sending chat messages.
+
+### Test checklist
+
+Verify:
+
+- Selecting a document opens its workspace
+- Editing text updates the document
+- AI blocks render correctly
+- Sections expand/collapse
 
 ---
 
-## Right Sidebar - AI Assistant
+# 4 - AI Document Analysis Engine Interface
 
-Create a chat panel connected to the opened document.
+Transform the AI assistant into a contextual document analysis tool.
 
-The chat must display:
+The AI panel must work only with the currently opened document.
 
-- active document context;
-- conversation history;
-- quick suggestions.
-
-Buttons:
+Add quick actions:
 
 - Summarize Document
 - Extract Information
 - Find Issues
-- Create Checklist
-- Generate Report
+- Generate Checklist
+- Create Report
 - Improve Text
 - Compare Versions
 
-The assistant must always know which document is open and work only on that document.
+Each action must generate visual results.
+
+Examples:
+
+## Summarize Document
+
+Generate summary cards:
+
+- Main topic
+- Key points
+- Important sections
+
+
+## Extract Information
+
+Generate information dashboard:
+
+- People
+- Dates
+- Numbers
+- Entities
+- Tasks
+
+
+## Find Issues
+
+Generate review panel:
+
+- Missing information
+- Inconsistencies
+- Suggestions
+
+
+## Create Checklist
+
+Generate interactive checklist cards.
+
+Do not display long AI messages.
+
+### Test checklist
+
+Verify:
+
+- Buttons generate different visual components
+- AI always references the selected document
+- Results appear inside workspace cards
 
 ---
 
-# 5 - Document Dashboard
+# 5 - Document Intelligence and Workflow System
 
-Add an initial home dashboard with an overview.
+Add advanced document lifecycle features.
+
+Implement:
+
+## Version Management
+
+Allow:
+
+- Create version
+- Compare versions
+- Restore previous version
+
+Create visual comparison:
+
+- Added sections
+- Removed sections
+- Modified paragraphs
+
+
+## Document Workflow
+
+Add statuses:
+
+- Draft
+- Review
+- Approved
+- Published
+- Archived
+
+Create workflow timeline:
+
+- Created
+- Modified
+- Sent for review
+- Approved
+
+
+## Semantic Search
+
+Create intelligent search interface.
+
+Search documents by:
+
+- keywords
+- concepts
+- related content
+
+Display:
+
+- matching documents
+- similarity score
+- related documents
+
+
+## Document Connections
+
+Create relationship visualization:
+
+- linked documents
+- references
+- related topics
+
+### Test checklist
+
+Verify:
+
+- Versions can be created
+- Differences are displayed
+- Status changes update UI
+- Search finds related documents
+- Connections appear visually
+
+---
+
+# 6 - Final Document Management SaaS Interface
+
+Create the final professional SaaS experience.
+
+Add:
+
+# Dashboard Home
+
+Create:
 
 ## Statistics Cards
 
@@ -211,48 +360,71 @@ Include:
 - Documents Under Review
 - Documents Created This Week
 
-## Recent Documents Section
 
-Display recently opened documents with:
+## Recent Documents
 
-- preview;
-- title;
-- type;
-- latest activity.
+Display:
 
-## Quick Actions Section
+- Preview
+- Title
+- Type
+- Last Activity
 
-Create large action buttons:
 
-+ New Document
+## Quick Actions
 
-+ Upload File
+Large buttons:
 
-+ Import From Cloud
+- New Document
+- Upload File
+- Import Cloud Document
+- Create Template
+- Search Documents
 
-+ Create Template
 
-+ Search Documents
+# Final Design System
 
----
+Apply:
 
-# 6 - Design System
+- Dark/light mode
+- Premium spacing
+- Smooth Framer Motion animations
+- Drag and drop upload
+- Responsive layouts
+- Floating panels
+- Beautiful empty states
+- Loading skeletons
+- Hover animations
 
-Use a modern design style:
-
-- dark/light mode support;
-- rounded cards;
-- collapsible sidebars;
-- smooth animations;
-- drag & drop document management;
-- minimal icons;
-- responsive layout for desktop/tablet/mobile.
 
 Design inspiration:
 
-- Notion for content management;
-- Google Drive for document libraries;
-- Obsidian for connections and knowledge graphs;
-- ChatGPT Canvas for AI interaction.
+- Notion
+- Google Drive
+- Obsidian
+- ChatGPT Canvas
+- Linear
+- Vercel
 
-The final result should look like a professional SaaS product for intelligent knowledge and document management.
+
+Final requirements:
+
+- No traditional chatbot interface
+- AI works through document actions
+- Every result is visual
+- Documents are the center of the experience
+- Fully responsive
+- Production-quality SaaS interface
+
+
+### Final acceptance checklist
+
+- Upload flow works
+- Document library works
+- Document viewer works
+- AI analysis works
+- Version system works
+- Search works
+- Dashboard works
+- Mobile experience works
+- UI feels like a commercial product
