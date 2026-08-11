@@ -164,6 +164,7 @@ Include:
 - Author
 - Export button
 - Create new version button
+- Delete button
 
 ## Content Area
 
