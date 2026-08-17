@@ -1,287 +1,388 @@
-# 1. Build the Gmail Login and Read-Only Email Foundation
+# 1. Build the Responsive Email Manager Foundation
 
-Transform the existing AI chat application into the first version of an AI-powered Gmail email manager.
+Transform the existing AI chat application into the foundation of an AI-powered email manager.
 
-The application must use **Google OAuth login only**. Do not require users to manually provide API keys, Gmail API keys, client secrets, tokens, or other credentials inside the application UI. The user must authenticate by clicking a **Sign in with Google** button and granting the required permissions through Google's authorization flow.
+Keep the existing chat experience as the core of the application, but redesign the UI so that it can progressively support Gmail email access and AI-assisted email exploration.
 
-Request only the minimum Gmail permissions required for this application. The application must be strictly **read-only**:
+Build a clean, modern, application-style interface with these main areas:
 
-* Access the authenticated user's Gmail mailbox.
-* Read email messages.
-* Read email metadata such as sender, recipients, subject, date, labels, thread ID, and message ID.
-* Read email bodies when needed.
-* List mailbox folders/labels.
-* Search and filter messages.
-* Do not send email.
-* Do not compose email.
-* Do not create drafts.
-* Do not modify email.
-* Do not delete email.
-* Do not archive email.
-* Do not change labels.
-* Do not mark messages as read or unread.
+- A top application bar with the product name and user/account area.
+- A responsive navigation area for email folders and filters.
+- A central area for the AI chat.
+- An email results/list area that will later display messages found through searches or AI requests.
+- An email detail view that will later display the selected email.
 
-Add authentication state management so that:
+The application must be fully responsive.
 
-* Logged-out users see a clean Google login screen.
-* Logged-in users enter the email manager.
-* The current Google account is visible in the UI.
-* A Logout action is available at all times.
-* Logout clears the local application session and returns the user to the login screen.
+Test and optimize the layout for:
 
-Preserve the existing AI chat functionality as the main application foundation.
+- Small mobile phones.
+- Medium and large mobile phones.
+- All common phone sizes available in Google Chrome DevTools device emulation.
+- Tablets in portrait and landscape mode.
+- Laptops.
+- Desktop monitors.
+- Large desktop screens.
 
-After login, retrieve a small initial set of recent Gmail messages and display them in a simple mailbox panel alongside the chat interface.
+Responsive behavior:
 
-Each email item should show at least:
+- On desktop, use a multi-column application layout when enough space is available.
+- On tablets, collapse secondary areas when necessary.
+- On mobile, use a single-column flow.
+- Navigation should become a drawer or equivalent compact UI on small screens.
+- Email lists and email details must be easy to use with touch.
+- Avoid horizontal scrolling.
+- Buttons and interactive controls must have mobile-friendly touch targets.
 
-* Sender
-* Subject
-* Date/time
-* Short preview/snippet
+Do not implement email sending, composing, replying, forwarding, deleting, or modifying messages.
 
-Clicking an email must open its complete readable content without modifying its Gmail state.
+The application is strictly a read-only AI email manager.
 
-Handle authentication errors, expired sessions, missing permissions, network errors, and empty mailboxes gracefully.
+Preserve the existing AI chat functionality and prepare the architecture so the following notebook steps can add authentication, IMAP access, email browsing, filtering, and AI-powered querying.
 
-The application architecture must already be suitable for later adding natural-language questions about the user's emails.
-
-Make this first implementation functional before moving to the next step.
+At the end of this step, run the application and verify the responsive layout at multiple viewport sizes before continuing.
 
 ---
 
-# 2. Build a Responsive Email Manager Interface Around the AI Chat
+# 2. Add Secure Gmail IMAP Login and Logout
 
-Starting from the Gmail-authenticated application built in the previous step, redesign the interface into a complete responsive AI email manager while preserving all existing functionality.
+Extend the application created in the previous step with authentication for Gmail through IMAP.
 
-The product should feel primarily like an **AI chat application connected to Gmail**, rather than a traditional Gmail clone.
+Do not use Google OAuth for this implementation.
 
-Create three logical areas:
+Create a login screen containing exactly these connection fields:
 
-1. Navigation and account controls.
-2. Email browsing and filtering.
-3. AI chat.
+- IMAP Host
+- IMAP Username
+- IMAP Password
 
-On large desktop screens, use the available horizontal space effectively. A preferred layout is:
+The default IMAP host may be shown as:
 
-* A compact navigation/sidebar area.
-* A mailbox/message list area.
-* A large AI chat area.
+imap.gmail.com
 
-The AI chat should remain the primary visual focus.
+Allow the user to change it.
 
-On tablets, intelligently reduce panel widths and allow panels to collapse when required.
+Use the credentials only on the server side to establish the IMAP connection.
 
-On mobile phones, avoid squeezing desktop columns together. Convert the interface into a mobile-first navigation model where the user can move between:
+Security requirements:
 
-* Chat
-* Emails
-* Email details
-* Filters/account
+- Never expose the IMAP password in frontend JavaScript.
+- Never include the password in URLs.
+- Never log the password.
+- Never display the password after authentication.
+- Never store credentials in source code.
+- Avoid persistent password storage unless absolutely necessary.
+- Keep authentication state securely on the backend.
+- Use TLS/SSL for the IMAP connection.
+- Return safe and understandable authentication errors to the UI.
 
-Use drawers, tabs, bottom navigation, stacked views, or another appropriate mobile interaction pattern.
+After successful authentication:
 
-The application must be fully responsive across the common mobile devices available in Chrome/Google DevTools device emulation, including small phones, modern iPhones, Android phones, foldable-sized narrow screens where practical, tablets, laptops, and large desktop monitors.
+- Show the main email manager interface.
+- Display the authenticated email address in the account area.
+- Keep the IMAP connection information associated with the user's session.
 
-Design for at least these general viewport classes:
+Add a Logout action.
 
-* Approximately 320–480 px wide phones.
-* Approximately 600–900 px wide tablets.
-* Approximately 1024–1440 px laptops/desktops.
-* Large desktop displays above 1440 px.
+Logout must:
 
-Avoid:
+- Close the IMAP connection if one is active.
+- Destroy the authenticated session.
+- Remove temporary credentials or authentication information.
+- Return the user to the login page.
 
-* Horizontal page scrolling.
-* Clipped buttons.
-* Unreadable text.
-* Fixed-width panels that break on small screens.
-* Dialogs larger than the viewport.
-* Controls that require mouse hover.
-* Tiny touch targets.
+Add a small connection-status indicator so the user can distinguish between:
 
-Email rows must remain easy to scan and select on touch devices.
+- Connected
+- Connecting
+- Disconnected
+- Authentication error
 
-Keep the Google account identity and Logout action accessible without dominating the interface.
+Make the login page fully responsive using the same mobile, tablet, laptop, and desktop requirements from the previous step.
 
-Create a professional, minimal UI suitable for managing a large mailbox.
+Do not implement any IMAP operations that modify the mailbox.
 
-Do not add any email-writing functionality.
-
----
-
-# 3. Add Gmail Search, Filters, Labels, Threads, and Message Exploration
-
-Extend the application so the user can efficiently explore their Gmail mailbox before using AI.
-
-Implement read-only Gmail browsing capabilities.
-
-Support:
-
-* Recent emails.
-* Pagination or incremental loading.
-* Search by text.
-* Sender filtering.
-* Recipient filtering where applicable.
-* Subject filtering.
-* Date or date-range filtering.
-* Gmail labels.
-* Unread/read filtering when Gmail metadata makes it available.
-* Attachments-present filtering when available.
-* Thread/conversation grouping.
-* Opening a complete thread.
-* Opening an individual message.
-* Returning from message details to previous results without losing filters.
-
-Where useful, take advantage of Gmail's native search/query capabilities instead of downloading the complete mailbox to perform every search locally.
-
-Add a search/filter interface that works well both with mouse/keyboard and touch.
-
-Show active filters clearly and allow users to remove individual filters or reset all filters.
-
-For an opened message, display useful read-only metadata such as:
-
-* From
-* To
-* CC when present
-* Subject
-* Date
-* Gmail labels
-* Thread information
-* Message content
-* Attachment names and metadata when available
-
-Do not introduce any operation that modifies Gmail.
-
-Improve loading states for large inboxes. Do not block the entire interface while fetching another page of messages.
-
-Use sensible caching where useful, while ensuring that one user's Gmail data can never leak into another authenticated user's session.
-
-Keep all functionality from the previous notebook steps working.
+At the end of this step, verify login, failed login, authenticated session handling, connection loss, and logout.
 
 ---
 
-# 4. Connect the AI Chat to Gmail and Answer Questions About Emails
+# 3. Add Read-Only Mailbox Browsing, Email Reading, and Filtering
 
-Turn the existing AI chat into an intelligent conversational interface over the authenticated user's Gmail mailbox.
+Using the authenticated IMAP connection implemented in the previous step, add real mailbox browsing.
+
+The application must be strictly read-only.
+
+Implement mailbox discovery so the UI can show available folders/mailboxes such as:
+
+- Inbox
+- Sent
+- Drafts
+- Spam
+- Trash
+- Archive / All Mail
+- Starred or other folders when exposed through IMAP
+- Custom labels/folders when available
+
+Do not assume every server exposes identical folder names. Discover them through IMAP.
+
+For the selected mailbox, retrieve email metadata and display a paginated or progressively loaded email list.
+
+For each message, show useful information such as:
+
+- Sender
+- Sender email address
+- Subject
+- Date/time
+- Short preview/snippet
+- Read/unread state when available
+- Attachment indicator when available
+
+Selecting an email must open a readable email detail view containing:
+
+- From
+- To
+- CC when present
+- Date
+- Subject
+- Email body
+- Attachment metadata when available
+
+Render HTML emails safely. Sanitize untrusted HTML before displaying it and prevent email content from executing arbitrary scripts.
+
+Add user-controlled filtering and search.
+
+Support filters for at least:
+
+- Mailbox/folder
+- Sender
+- Recipient
+- Subject
+- Text
+- Date range
+- Read/unread status
+- Has attachments
+
+Prefer server-side IMAP searches where practical instead of downloading the entire mailbox.
+
+Add pagination or lazy loading so very large Gmail accounts remain usable.
+
+Make loading states explicit and avoid freezing the UI while IMAP operations are running.
+
+Important read-only requirement:
+
+The application must never:
+
+- Send email
+- Compose email
+- Reply
+- Forward
+- Delete email
+- Move email
+- Archive email
+- Change labels
+- Mark messages as read or unread
+- Add or remove stars
+- Modify flags
+- Modify drafts
+
+When opening messages through IMAP, avoid accidentally setting the `Seen` flag. Use read-only mailbox access and BODY.PEEK or the appropriate equivalent whenever possible.
+
+Preserve the responsive design.
+
+On desktop, the mailbox list, message list, and message details can coexist when space permits.
+
+On mobile, provide a natural navigation flow:
+
+Folders → Messages → Message
+
+with clear back navigation.
+
+At the end of this step, test the application against a Gmail mailbox containing enough messages to verify pagination, folder navigation, searching, HTML rendering, and read-only behavior.
+
+---
+
+# 4. Connect the AI Chat to Gmail Email Retrieval
+
+Turn the existing AI chat into an intelligent interface for querying the authenticated mailbox.
 
 The user must be able to ask natural-language questions such as:
 
-* "What emails did I receive from John last week?"
-* "Summarize the emails from Acme about the contract."
-* "Did anyone mention a deadline for the project?"
-* "Find emails about the August invoice."
-* "What did Sarah say about the meeting?"
-* "Show me the latest messages from Google."
-* "Which emails mention Kubernetes?"
-* "Summarize my unread emails from today."
-* "What are the most important things discussed in my emails this week?"
+- "Show me emails from John from last month."
+- "Find emails about the Acme contract."
+- "What did Sarah tell me about the meeting?"
+- "Show messages containing invoices from July."
+- "Find unread emails from example.com."
+- "Which emails mention Kubernetes?"
+- "Summarize the emails I received from Mario this week."
+- "What was the latest email from Alice about the project?"
 
-Create an AI email-retrieval layer rather than simply passing the entire mailbox to the model.
+Do not provide the AI model with unrestricted direct access to IMAP.
 
-For each question:
+Create a controlled email retrieval layer with explicit read-only tools/functions that the AI can call.
 
-1. Understand the user's intent.
-2. Determine which Gmail searches or filters are appropriate.
-3. Retrieve only the emails or threads relevant to the question.
-4. Extract the necessary content.
-5. Provide that context to the AI.
-6. Generate an answer grounded in the retrieved Gmail messages.
+Create tools similar to:
 
-Whenever possible, include references to the source emails used for the answer.
+- list_mailboxes()
+- search_emails(...)
+- get_email_metadata(...)
+- get_email_content(...)
+- get_email_thread(...) when technically possible
+- search_by_sender(...)
+- search_by_date_range(...)
+- search_by_subject(...)
+- search_by_text(...)
 
-References should allow the user to click or tap and open the corresponding email or thread in the application.
+The AI should translate the user's natural-language request into calls to these controlled tools.
 
-For answers involving several messages, clearly distinguish:
+The backend should perform IMAP operations and return only the necessary email data to the AI.
 
-* AI-generated explanation or summary.
-* Source emails supporting the answer.
+Implement a retrieval workflow:
 
-Do not invent information that does not exist in the retrieved emails.
+1. User asks a question in chat.
+2. The AI determines what mailbox information is required.
+3. The AI calls one or more read-only email tools.
+4. The backend queries Gmail through IMAP.
+5. Relevant messages are returned.
+6. The AI answers using those messages.
+7. Matching emails are also shown in the email results UI when appropriate.
 
-If there is insufficient evidence, explicitly say that the requested information was not found.
+Whenever the AI makes a factual statement based on an email, make it possible for the user to identify the source message.
 
-If a question is ambiguous, use the available email context to make a reasonable interpretation, but allow the user to refine the query conversationally.
+Add source references to AI responses using useful information such as:
 
-Preserve conversational context so follow-up questions work. For example:
+- Sender
+- Subject
+- Date
 
-User: "Find the messages from Alice about the conference."
+Allow clicking a source reference to open the corresponding email in the email detail view.
 
-Then:
+Do not hallucinate email information.
 
-User: "What date did she suggest?"
+If the necessary information cannot be found in the mailbox, the AI should clearly say that it could not find supporting emails.
 
-The second question should understand that "she" and the subject refer to the previous result.
+Protect against prompt injection contained inside email bodies.
 
-Never allow the AI layer to send, edit, delete, archive, label, draft, or otherwise modify Gmail messages.
+Treat all email content as untrusted data, never as application or system instructions.
+
+An email saying things such as "ignore previous instructions", "send this message", "reveal credentials", or similar must never change the AI agent's permissions or behavior.
+
+The AI email tools must remain read-only regardless of instructions found inside emails or supplied by the user.
+
+Do not expose IMAP credentials to the AI model.
+
+At the end of this step, demonstrate several natural-language email queries and verify that the AI results correspond to actual messages returned through IMAP.
 
 ---
 
-# 5. Complete the AI Email Manager and Make It Production-Ready
+# 5. Complete the AI-Powered Gmail Email Manager
 
-Starting from the complete application built in the previous steps, refine it into a polished read-only AI-powered Gmail email manager.
+Complete and polish the application built in the previous notebook steps into a coherent AI-powered read-only Gmail email manager.
 
-Review the entire implementation and remove temporary code, placeholders, duplicated components, fake data, development shortcuts, and unused dependencies.
+The final application should provide two complementary ways of accessing email:
 
-Ensure the complete user flow works:
+1. Traditional email browsing and filtering.
+2. Conversational AI querying through chat.
 
-1. Open the application.
-2. Sign in with Google.
-3. Authorize read-only Gmail access.
-4. Enter the email manager.
-5. Browse emails.
-6. Search and filter emails.
-7. Open individual messages and threads.
-8. Ask the AI questions about Gmail.
-9. Open source messages referenced by AI answers.
-10. Continue asking contextual follow-up questions.
-11. Logout safely.
+Integrate them tightly.
 
-Improve AI answers so they are concise by default but can produce detailed summaries when requested.
+For example:
 
-For email-related AI answers, prefer a structure such as:
+- A manual email search should make its results available to the chat context when useful.
+- AI search results should appear in the email results interface.
+- Clicking an email referenced by the AI should open that email.
+- The user should be able to ask follow-up questions about a selected email.
+- The user should be able to ask follow-up questions about a set of search results.
 
-* Direct answer.
-* Important details.
-* Relevant email sources.
+Add useful AI capabilities such as:
 
-Do not expose raw Gmail API responses or unnecessary technical metadata to ordinary users.
+- Summarize one email.
+- Summarize a group of emails.
+- Summarize a conversation/thread when available.
+- Extract dates.
+- Extract people and organizations.
+- Extract action items.
+- Find decisions mentioned in messages.
+- Find messages related to a topic.
+- Compare information contained in several messages.
+- Produce chronological summaries of related emails.
+- Answer questions whose evidence may be distributed across multiple emails.
 
-Add appropriate:
+Always preserve source traceability.
 
-* Loading indicators.
-* Empty states.
-* Authentication error states.
-* Permission error states.
-* Gmail retrieval error states.
-* AI processing states.
-* Retry actions.
-* Session-expired handling.
+For AI answers based on mailbox content, provide clickable references to the relevant emails whenever possible.
 
-Ensure sensitive Gmail content is never persisted unnecessarily in browser storage, logs, analytics, or debugging output.
+Improve application states for:
 
-Do not log email bodies or authentication tokens.
+- Initial loading
+- Empty mailbox
+- No search results
+- AI processing
+- IMAP connection failure
+- Session expiration
+- Authentication failure
+- Network failure
+- Very large result sets
 
-Maintain strict separation between authenticated users and their data.
+Review performance.
 
-Verify again that the Google OAuth permissions are the minimum necessary for read-only Gmail access.
+Avoid downloading entire mailboxes.
 
-Perform a complete responsive-design review using the mobile devices available in Chrome/Google DevTools and verify representative sizes for:
+Use:
 
-* Small mobile phones.
-* Standard Android phones.
-* Modern iPhones.
-* Large phones.
-* Tablets in portrait.
-* Tablets in landscape.
-* Small laptops.
-* Standard desktop displays.
-* Large desktop monitors.
+- IMAP-side searching where possible
+- Pagination
+- Lazy loading
+- Limited result sets
+- Fetching complete email bodies only when necessary
+- Caching of safe non-sensitive metadata when useful
 
-Check important interactions in both portrait and landscape orientations where applicable.
+Review security.
 
-The final application must remain fully usable with touch input and must not depend on hover interactions.
+Ensure:
 
-The final result should be a clean, fast, responsive application where the user experiences Gmail as a searchable knowledge source controlled primarily through an AI conversation.
+- Credentials remain server-side.
+- Passwords are never logged.
+- Email HTML is sanitized.
+- Email content is treated as untrusted.
+- AI tool permissions are explicitly read-only.
+- There is no email-writing tool.
+- There is no hidden API endpoint capable of sending or modifying email.
+- Logout destroys authentication state.
+- IMAP connections are cleaned up correctly.
 
-The application must remain strictly read-only with regard to Gmail. Do not implement email composition, replies, forwarding, drafts, deletion, archiving, label changes, or any other mailbox mutation.
+Perform a final read-only audit.
+
+There must be no feature allowing the application or AI to:
+
+- Compose
+- Send
+- Reply
+- Forward
+- Delete
+- Archive
+- Move
+- Label
+- Star
+- Mark read
+- Mark unread
+- Modify any email or mailbox state
+
+Perform a complete responsive review using Chrome DevTools.
+
+Test representative devices covering:
+
+- Small phones
+- Standard phones
+- Large phones
+- iPhone-sized devices
+- Android-sized devices
+- Foldable/narrow layouts where available
+- Small tablets
+- Large tablets
+- Laptop screens
+- Standard desktop screens
+- Large desktop screens
+
+Fix clipping, overflow, unusable dialogs, overly small controls, and layouts that depend on fixed screen dimensions.
+
+The final result should feel like a real email application whose primary differentiator is that the user can simply chat with their Gmail mailbox to find, inspect, filter, summarize, and understand existing emails without ever giving the AI permission to write or modify email.
