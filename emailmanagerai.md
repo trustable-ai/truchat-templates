@@ -494,3 +494,497 @@ Instrument development builds to measure startup and mailbox-request timing.
 If any implementation choice conflicts with these architectural rules, **the architectural rules take precedence over convenience, completeness, prefetching, caching, or UI behavior.**
 
 Create a concise `README.md` documenting the architecture, APIs, OpenServerless actions, IMAP configuration, pagination strategy, performance constraints, security/privacy model, development, deployment, and testing.
+
+---
+
+# 6. Polish the Email Manager with Tailwind CSS
+
+Improve the visual quality of the existing React email manager using Tailwind CSS.
+
+Do **not** change the application architecture, data-loading strategy, pagination model, IMAP behavior, consent model, or existing AI chat integration.
+
+This step is visual and UX-focused only.
+
+## Mandatory Architectural Rules
+
+These rules still apply and must not be violated:
+
+**Never load the mailbox before loading the application.**
+
+**Never load the entire mailbox.**
+
+**Never make application startup depend on IMAP.**
+
+**Initially load only 20 email headers.**
+
+**Never automatically preload subsequent pages.**
+
+**Never fetch full email bodies for list rows.**
+
+**Never preload neighboring messages.**
+
+**Never download attachments automatically.**
+
+**Never send email content to AI without explicit consent.**
+
+**Do not introduce visual components that trigger additional background data requests.**
+
+Tailwind styling must not create new data-loading behavior.
+
+## Visual Direction
+
+Make the application feel like a polished modern productivity tool rather than a generic admin dashboard.
+
+Use:
+
+* Clean spacing.
+* Strong visual hierarchy.
+* High-quality typography.
+* Subtle borders.
+* Soft background separation.
+* Minimal shadows.
+* Restrained use of rounded cards.
+* Clear hover states.
+* Clear selected states.
+* Smooth but fast transitions.
+* Consistent icon sizing.
+* Accessible contrast.
+* Responsive layouts.
+
+Avoid excessive gradients, glassmorphism, oversized cards, unnecessary animations, or decorative elements that reduce information density.
+
+The mailbox should remain efficient and readable.
+
+## Tailwind Design System
+
+Create a small reusable visual system using Tailwind classes and shared components.
+
+Define consistent patterns for:
+
+```text
+Page background
+Primary surface
+Secondary surface
+Borders
+Muted text
+Primary text
+Accent color
+Danger state
+Success state
+Warning state
+Focus ring
+Selected row
+Hover row
+Disabled state
+```
+
+Prefer reusable React components instead of repeating large Tailwind class strings everywhere.
+
+For example:
+
+```tsx
+export function Panel({
+	children,
+	className = "",
+}: {
+	children: React.ReactNode;
+	className?: string;
+}) {
+	return (
+		<div
+			className={`border border-slate-200 bg-white ${className}`}
+		>
+			{children}
+		</div>
+	);
+}
+```
+
+Use the project's existing Tailwind configuration if already present.
+
+Do not replace an existing theme system unnecessarily.
+
+## Desktop Layout
+
+Refine the desktop layout into a clear multi-panel workspace:
+
+```text
+Mail navigation
+      |
+Message list
+      |
+Message reader
+      |
+Existing AI chat
+```
+
+Use available screen width intelligently.
+
+Suggested behavior:
+
+```text
+Navigation:
+compact fixed-width column
+
+Mail list:
+medium-width column
+
+Reader:
+main flexible area
+
+AI chat:
+resizable or collapsible side panel
+```
+
+Add subtle separators between regions instead of wrapping every panel in a floating card.
+
+The layout should feel like one integrated application.
+
+## Mail Sidebar
+
+Improve the mailbox navigation.
+
+Include polished states for:
+
+```text
+Inbox
+Unread
+Starred
+Sent
+Archive
+Spam
+Trash
+```
+
+Use meaningful icons.
+
+Selected navigation should be immediately recognizable without relying only on text color.
+
+Example style direction:
+
+```tsx
+className="
+	flex items-center gap-3
+	rounded-md
+	px-3 py-2
+	text-sm font-medium
+	text-slate-600
+	hover:bg-slate-100
+	hover:text-slate-900
+	transition-colors
+"
+```
+
+Create a stronger selected state.
+
+Keep touch targets large enough for mobile use.
+
+## Message List
+
+Make the email list dense but readable.
+
+Each row should clearly communicate:
+
+```text
+Sender
+Subject
+Preview
+Date/time
+Unread state
+Attachment indicator
+Selected state
+```
+
+Unread emails should have stronger typography.
+
+Selected emails should have a clear background and edge indicator.
+
+Avoid placing each email inside a separate large card.
+
+Use rows with borders and hover states.
+
+For example:
+
+```text
+Unread
+→ stronger sender + subject
+
+Read
+→ normal weight
+
+Selected
+→ accent-tinted background
+
+Hover
+→ subtle neutral background
+```
+
+Do not trigger message loading on hover.
+
+Only explicit selection should load the message.
+
+## Message Reader
+
+Improve readability of opened emails.
+
+Create a clean header containing:
+
+```text
+Subject
+Sender
+Recipients
+Date
+Attachment metadata
+```
+
+Separate metadata visually from the body.
+
+Use comfortable line length for email content.
+
+Do not allow message text to stretch across extremely wide screens.
+
+Use typography similar to:
+
+```text
+max-width around 65–80 characters for long text
+comfortable line-height
+clear paragraph spacing
+```
+
+Sanitized email content should visually remain separate from application controls.
+
+## Existing AI Chat Panel
+
+Do not redesign the AI functionality.
+
+Visually integrate the existing chat with the mail application.
+
+Clearly distinguish:
+
+```text
+User messages
+AI messages
+Email context
+Consent state
+Loading state
+AI unavailable state
+```
+
+Show email-sharing state near the chat input.
+
+Examples:
+
+```text
+No email context
+Using selected email
+Using approved excerpt
+```
+
+Use a small badge or status element rather than a large warning banner.
+
+The consent dialog should have a strong visual hierarchy and clearly distinguish:
+
+```text
+Cancel
+Allow email context
+```
+
+Do not use manipulative styling that makes the consent action appear mandatory.
+
+## Search and Filters
+
+Improve the search field using Tailwind.
+
+Include:
+
+* Search icon.
+* Clear button.
+* Loading indicator.
+* Keyboard focus state.
+* Responsive width.
+
+Filters should use compact chips or segmented controls.
+
+For example:
+
+```text
+All
+Unread
+Important
+Newsletter
+Receipts
+Work
+```
+
+Selected filters must have a clear visual state.
+
+Do not cause filters to automatically fetch every matching message.
+
+They must continue using the existing paginated backend.
+
+## Loading States
+
+Replace generic loading text with polished skeleton states where appropriate.
+
+For the initial mailbox request, render approximately the same number of skeleton rows as the first page layout would display.
+
+Do not show 20 animated placeholders if fewer are needed visually.
+
+Avoid expensive or distracting animations.
+
+Use Tailwind utilities such as:
+
+```text
+animate-pulse
+bg-slate-100
+rounded
+```
+
+Only animate currently visible loading UI.
+
+## Empty and Error States
+
+Create polished states for:
+
+```text
+Empty mailbox
+No search results
+IMAP unavailable
+IMAP timeout
+Message unavailable
+AI unavailable
+Consent refused
+```
+
+Keep them compact.
+
+Do not replace the entire application with a full-screen error when only one dependency has failed.
+
+For example:
+
+```text
+IMAP unavailable
+→ error inside mail panel
+
+AI unavailable
+→ error inside AI panel
+```
+
+The rest of the application must remain usable.
+
+## Responsive Design
+
+Use Tailwind responsive breakpoints intentionally.
+
+Desktop:
+
+```text
+multi-panel layout
+```
+
+Tablet:
+
+```text
+mail list + active secondary panel
+```
+
+Mobile:
+
+```text
+one primary panel at a time
+```
+
+On mobile, use a navigation flow such as:
+
+```text
+Mailboxes
+   ↓
+Message list
+   ↓
+Message
+   ↓
+AI chat
+```
+
+Provide clear back controls.
+
+Do not horizontally squeeze four desktop panels into a mobile viewport.
+
+Ensure the UI works correctly at common browser developer-tool sizes for:
+
+```text
+small phones
+large phones
+tablets
+laptops
+desktop monitors
+```
+
+## Interaction Polish
+
+Add subtle Tailwind transitions for:
+
+```text
+hover
+focus
+selection
+sidebar opening
+chat panel opening
+dialogs
+filter changes
+```
+
+Keep transitions short.
+
+Prefer approximately:
+
+```text
+duration-150
+duration-200
+```
+
+Avoid animations that delay interaction.
+
+Respect reduced-motion preferences where practical.
+
+## Accessibility
+
+Ensure:
+
+* Visible keyboard focus.
+* Proper contrast.
+* Buttons are recognizable as controls.
+* Dialogs are keyboard accessible.
+* Icon-only controls have accessible labels.
+* Selected states do not rely only on color.
+* Touch targets are sufficiently large.
+
+Use semantic HTML before adding ARIA.
+
+## Final Visual Requirement
+
+The finished application should feel:
+
+```text
+Fast
+Professional
+Dense but readable
+Modern
+Calm
+Consistent
+Privacy-aware
+```
+
+It should not feel like:
+
+```text
+A marketing landing page
+A generic Tailwind dashboard template
+A collection of disconnected cards
+An AI demo with email bolted on
+```
+
+The email manager and existing AI chat should visually appear as parts of one cohesive product.
+
+If any visual improvement conflicts with the existing performance and bounded-loading architecture, **the architectural rules take precedence over visual polish.**
+
