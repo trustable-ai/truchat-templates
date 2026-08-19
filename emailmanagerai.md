@@ -4,6 +4,8 @@ Start from the existing application, which already contains a working and config
 
 Do **not** rebuild or replace the existing chat, AI provider, model configuration, authentication, or application foundation.
 
+Make an application that will be called Mailo
+
 ## Mandatory Architectural Rules
 
 These rules apply to this step and must not be violated:
