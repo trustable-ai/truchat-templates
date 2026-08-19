@@ -2,9 +2,9 @@
 
 Start from the existing application, which already contains a working and configured AI chat.
 
-Do **not** rebuild or replace the existing chat, AI provider, model configuration, authentication, or application foundation.
+Do **not** rebuild or replace the existing chat, AI provider, model configuration, authentication, or application foundation, but you can edit the colors and shape and place it where is good with Tailwind.
 
-Make an application that will be called Mailo
+Make an application that will be called Mailo and make application startup depend on IMAP parameters make a form for that, and use Tailwind to make the application well-looking from the beginning.
 
 ## Mandatory Architectural Rules
 
@@ -14,7 +14,6 @@ These rules apply to this step and must not be violated:
 
 **Never load the entire mailbox.**
 
-**Never make application startup depend on IMAP.**
 
 **The complete application must become usable within 30 seconds, even if IMAP is slow or unavailable.**
 
