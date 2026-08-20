@@ -1428,3 +1428,9 @@ Do not claim completion if:
 * existing ordinary chat functionality has changed
 
 The completed application must be a **beautiful, cohesive, responsive React + Tailwind email and AI application backed by Nuvolaris/OpenServerless actions and Redis**, with the existing chat visually redesigned as part of Mailo while preserving its original functional behavior.
+
+---
+
+# 7. Platform optimization
+
+Ensure full application can be loaded and deployed within 30 seconds, do optimization if does not, do nothing and explain if alredy does.
