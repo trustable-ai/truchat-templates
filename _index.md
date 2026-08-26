@@ -1,6 +1,6 @@
 # Chat
 
-- [Document Ingest](truingest.md) Document Ingestion
+- [Document Ingest](https://github.com/trustable-ai/truingest) Document Ingestion
 
 1. [AI Document Manager](documentchatai.md) Manage Documents with AI
 1. [AI Database Manager](dbmanagerai.md) Manage Databases with AI
